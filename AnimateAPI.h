@@ -42,8 +42,8 @@ void api_animation_frame(
   draw(progress);
   
   if (time_fraction < 1) {
-    
-    set_timeout( [] () {
+    // @see https://www.linux.org.ru/forum/development/6704690
+    set_timeout( [&] () {
       log(String(start));
       //api_animation_frame(start, draw, timing, duration, step_time, finish_callback);
     }, step_time);
