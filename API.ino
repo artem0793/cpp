@@ -4,6 +4,7 @@
  * Index controller.
  */
  
+const unsigned int FPS = 10;
 
 /**
  * + Прогрессивная функция
@@ -13,27 +14,24 @@
 
 #include "LogsAPI.h"
 #include "TimeoutAPI.h"
-
-//#include "OnceAPI.h" 
-//#include "TimeoutAPI.h"
-//#include "AnimateAPI.h"
+#include "OnceAPI.h" 
+#include "AnimateAPI.h"
 
 
 void setup() {
   init_log_settings();
 
+  animate([](float p){
+    log("LINE: " + String(p));
+  }, api_animate_line, 10000, 1000);
 
-  SimpleCallback a = [](){
-    log("XXX");  
-  };
-  
-  set_timeout(a, 5000);
+  animate([](float p){
+    log("SQ: " + String(p));
+  }, api_animate_sq, 10000, 1000);
 }
 
 void loop() {
-//  toggleTimeManager();
-//  once(test, "qwe");
-
   time_manager_trigger();
-  delay(50);
+  
+  delay(FPS);
 }
