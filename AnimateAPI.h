@@ -4,11 +4,6 @@
  * Provide animate functionality.
  */
 
-
-/**
- * @TODO Сделать остальные 2 функции.
- */
-
 const unsigned int API_ANIMATE_LINE = 1;
 
 typedef float (*AnimateTimingCallback)(float);

@@ -1,3 +1,4 @@
+
 /**
  * @file
  * Abstract Timeout class.
@@ -10,7 +11,7 @@ class TimeoutCallbackBase: AbstractCallbackBase {
   
   public:
     /**
-     * Main xecute callback.
+     * Main execute callback.
      */
     void execute() {
        this->callback();
