@@ -12,26 +12,28 @@
  */
 
 #include "LogsAPI.h"
-#include "OnceAPI.h" 
 #include "TimeoutAPI.h"
-#include "AnimateAPI.h"
+
+//#include "OnceAPI.h" 
+//#include "TimeoutAPI.h"
+//#include "AnimateAPI.h"
+
 
 void setup() {
-  initLogSettings();
-}
+  init_log_settings();
 
-void test2(float progress) {
-   log("-" + String(progress));
-}
 
-void test () {
-
-  animate(test2);
+  SimpleCallback a = [](){
+    log("XXX");  
+  };
   
-  log("ЖОПА");
+  set_timeout(a, 5000);
 }
 
 void loop() {
-  toggleTimeManager();
-  once(test, "qwe");
+//  toggleTimeManager();
+//  once(test, "qwe");
+
+  time_manager_trigger();
+  delay(50);
 }

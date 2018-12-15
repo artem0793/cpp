@@ -40,13 +40,34 @@ void api_animation_frame(
   float progress = timing(time_fraction);
   
   draw(progress);
-  
-  if (time_fraction < 1) {
-    // @see https://www.linux.org.ru/forum/development/6704690
-    set_timeout( [&] () {
-      log(String(start));
-      //api_animation_frame(start, draw, timing, duration, step_time, finish_callback);
-    }, step_time);
+
+  if (time_fraction < 1) { 
+//    void A() { 
+//        Serial.println("I am function A\n"); 
+//    };
+      
+    // callback function 
+//    void B(void (*ptr)()) { 
+//        (*ptr) (); // callback to A 
+//    }; 
+//    
+//    void (*ptr)() = &A; 
+      
+    // calling function B and passing 
+    // address of the function A as argument 
+//    B(ptr); 
+    
+//    TimeoutCallback a = [&start]() -> void {
+//      Serial.println(String(start));
+//    };
+//
+//    a();
+    
+//    set_timeout([&start](){
+//      
+//      Serial.println(String(start));
+//
+//    }, step_time);
   }
 
   if (time_fraction == 1) {

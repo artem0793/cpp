@@ -2,17 +2,17 @@
  * @file
  * Log functionality.
  * 
- * Add initLogSettings() to setup callback;
+ * Add init_log_settings() to setup callback;
  * and use set_error() to throw exceptions;
  */
 
 const boolean API_LOG_ENABLE_SERIAL = true;
 
-const unsigned int API_LOG_SERIAL_SPEED = 9600;
+const int unsigned API_LOG_SERIAL_SPEED = 9600;
 
 boolean api_log_init = false;
 
-void initLogSettings() {
+void init_log_settings() {
   if (API_LOG_ENABLE_SERIAL) {
     Serial.begin(API_LOG_SERIAL_SPEED);  
     api_log_init = true;

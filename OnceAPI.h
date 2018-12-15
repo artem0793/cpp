@@ -1,10 +1,10 @@
+
 /**
  * @file
  * Provide possible run code once.
  */
 
 typedef void (*OnceCallback)();
-
 
 const unsigned int API_MAX_COUNT_ONCE_CALLBACKS = 4;
 
@@ -17,7 +17,7 @@ OnceCallbackStruct api_once_history[API_MAX_COUNT_ONCE_CALLBACKS];
 
 unsigned int current_size = 0;
 
-void once(OnceCallback callback, String id) {
+void once(OnceCallback callback, String id = "") {
   boolean allow = true;
   
   for (int i = 0; i < API_MAX_COUNT_ONCE_CALLBACKS; i++) {
