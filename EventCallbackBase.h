@@ -3,7 +3,6 @@
  * @file
  * Abstract Timeout class.
  */
- 
 class EventCallbackBase: AbstractCallbackBase {
 
   public:

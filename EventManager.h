@@ -54,7 +54,9 @@ class EventManager {
     /**
      * 
      */
-    void fire(String event_name, Event *event) {
+    void fire(Event *event) {
+      String event_name = event->getName();
+      
       for (int unsigned index = 0; index < MAX_SIZE_OF_EVENT_LISTENERS; index++) {
         if (this->_free[index] && event_name == this->_listeners[index].eventName) {
           this->_listeners[index].callback->setEvent(event);
