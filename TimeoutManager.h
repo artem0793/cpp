@@ -1,93 +1,93 @@
 
 /**
  * @file
- * Timeout manager service.
  */
 
-const unsigned int MAX_SIZE_OF_TIMEOUT_QUEUE = 4;
-
-const int NO_FREE_INDEX = -1;
-
 class TimeoutManager {
-  
+
   protected:
+    bool _free[MAX_SIZE_OF_TIMEOUT_QUEUE];
+    /**
+     * Queue.
+     */
+    Timeout * queue[MAX_SIZE_OF_TIMEOUT_QUEUE];
 
-    bool _free[MAX_SIZE_OF_TIMEOUT_QUEUE] = { false };
+  private:
+    /**
+     * Hidden constructor.
+     */
+    TimeoutManager() {
+      for (int i = 0; i < MAX_SIZE_OF_TIMEOUT_QUEUE; i++) {
+         this->_free[i] = true;
+      }
+    }
     
-    TimeoutCallbackBase *_queue[MAX_SIZE_OF_TIMEOUT_QUEUE];
-
-    int getFreeIndex() {
+    /**
+     * Hidden destructor.
+     */
+    ~TimeoutManager() {}
+    
+    /**
+     * Find free plase in array.
+     */
+    int getFreeQueueIndex() {
       for (int unsigned index = 0; index < MAX_SIZE_OF_TIMEOUT_QUEUE; index++) {
-        if (this->_free[index] == false) {
+        if (this->_free[index] == true) {
           return index;  
         }
       }
       
       return NO_FREE_INDEX;
     }
-  
-  private:
-    // Hidden.
-    TimeoutManager(TimeoutManager const&);
-    // Hidden.
-    TimeoutManager& operator= (TimeoutManager const&);
-    // Hidden.
-    TimeoutManager()  {
-      
-    }
-    // Hidden.
-    ~TimeoutManager() {
-      
-    }
-
-  public:
-    /**  
-     * Instance of this service.
-     */
-    static TimeoutManager& getInstance() {
-      static TimeoutManager instance;
         
+  public:
+
+    /**
+     * Instance of OSystem.
+     */
+    static TimeoutManager & get() {
+      static TimeoutManager instance;
+
       return instance;
     }
     
     /**
-     * Add new callback object.
+     * Add new timeout to queue.
      */
-    int unsigned add(TimeoutCallbackBase *timeout) {
-      int index = this->getFreeIndex();
-      
+    int setTimeout(Timeout * timeout, int unsigned time) {
+      int index = this->getFreeQueueIndex();      
       if (index != NO_FREE_INDEX) {
-        this->_queue[index] = timeout;
-        this->_free[index] = true;
-        
-        return index;
-      }
-      
-      set_error("Timeout API: NO free value in index.");
-      
-      return NO_FREE_INDEX;
-    }
-
-    /**
-     * Remove callback object by index.
-     */
-    void removeAt(int unsigned index) {
-      if (this->_free[index]) {
-        this->_queue[index]->remove();
+        timeout->expireTime = micros() + time;  
+        this->queue[index] = timeout;
         this->_free[index] = false;
       }
+
+      return index;
     }
 
     /**
-     * Trigger all queue.
+     * Clear timeout by index.
      */
-    void trigger(int unsigned time = 0) {
-      for (int unsigned index; index < MAX_SIZE_OF_TIMEOUT_QUEUE; index++) {
-        if (this->_free[index] == true && this->_queue[index]->isExpired(time)) {
-          this->_free[index] = false;
-          this->_queue[index]->execute();
+    void clearTimeout(int index) {
+      if (this->queue[index] != NULL) {
+        delete &(this->queue[index]);
+        this->_free[index] = true;
+      }
+    }
+
+    /**
+     * Check all queue.
+     */
+    void triggerQueue() {
+      int unsigned time = micros();
+
+      for (int unsigned index = 0; index < MAX_SIZE_OF_TIMEOUT_QUEUE; index++) {      
+        if (this->_free[index] == false && this->queue[index]->expireTime <= time) {
+          this->queue[index]->execute();
+          delete &(this->queue[index]);
+          this->_free[index] = true;
         }
       }
     }
-    
+
 };

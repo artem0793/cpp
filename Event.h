@@ -1,29 +1,30 @@
 
 /**
  * @file
+ * Event class.
  */
 
+template<typename TargetType>
 class Event {
-  
-  protected:
-    String _name;
-    TargetData *_data;
 
   public:
-    Event(String name) {
-      this->_name = name;
-    }
 
-    String getName() {
-      return this->_name;
-    }
+    /**
+     * Event name.
+     */
+    String type;
 
-    void setTarget(TargetData *data) {
-      this->_data = data;
-    }
+    /**
+     * Target element.
+     */
+    TargetType * target;
 
-    TargetData* getTarget() {
-      return this->_data;
+    /**
+     * Constructor.
+     */
+    Event(String type, TargetType * target) {
+      this->type = type;
+      this->target = target;
     }
 
 };
